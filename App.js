@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {StyleSheet, View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 
 function App(){
@@ -8,10 +8,17 @@ function App(){
   console.log(`Re-rendering Navigator. Camera: ${permission_status} `);
   const devices = useCameraDevices()
   const device = devices.back
+  const torchHandler = () =>{
+    if(torch == 'on'){
+      setTorch('off')
+    }else if(torch == 'off'){
+      setTorch('on')
+    }
+  }
 
   if (device == null) return <Text>Loading..</Text>
   return (
-    <SafeAreaView styles = {{flex : 1}}>
+    <View>
       <Camera torch={torch}
       style={StyleSheet.absoluteFill}
       device={device}
@@ -19,15 +26,12 @@ function App(){
       />
       <View>
           <TouchableOpacity
-            onPress={() => setTorch('off')}
+            onPress={torchHandler}
           >
-            <Text>Torch Off</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTorch('on')}>
-            <Text>Torch On</Text>
+            <Text>Torch</Text>
           </TouchableOpacity>
         </View>
-    </SafeAreaView>
+    </View>
   )
 };
 
